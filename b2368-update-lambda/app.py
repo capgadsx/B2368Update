@@ -1,29 +1,26 @@
+import json
 from chalice import Chalice
 
 app = Chalice(app_name='b2368-update-lambda')
+app.debug = True
 
+@app.route('/cpe_and_common/v2/Check.action', methods=['POST'])
+def check_update():
+    if app.debug:
+        __debug_request()
+    return {'status': '1'}
 
-@app.route('/')
-def index():
-    return {'hello': 'world'}
+@app.route('/FW/full/filelist.xml', methods=['GET'])
+def serve_file_list():
+    if app.debug:
+        __debug_request()
 
+@app.route('/FW/full/B2368_V100R001C00SPC085T.bin', methods=['GET'])
+def serve_firmware():
+    if app.debug:
+        __debug_request()
 
-# The view function above will return {"hello": "world"}
-# whenever you make an HTTP GET request to '/'.
-#
-# Here are a few more examples:
-#
-# @app.route('/hello/{name}')
-# def hello_name(name):
-#    # '/hello/james' -> {"hello": "james"}
-#    return {'hello': name}
-#
-# @app.route('/users', methods=['POST'])
-# def create_user():
-#     # This is the JSON body the user sent in their POST request.
-#     user_as_json = app.current_request.json_body
-#     # We'll echo the json body back to the user in a 'user' key.
-#     return {'user': user_as_json}
-#
-# See the README documentation for more examples.
-#
+def __debug_request():
+    print(' == DEBUG ==')
+    print(json.dumps(app.current_request.to_dict(), indent='\t'))
+    print(' == DEBUG ==')
