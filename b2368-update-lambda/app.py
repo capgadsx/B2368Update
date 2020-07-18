@@ -5,7 +5,6 @@ from chalice import Chalice, Response
 s3 = boto3.client('s3')
 
 app = Chalice(app_name='b2368-update-lambda')
-app.debug = True
 
 @app.route('/cpe_and_common/v2/Check.action', methods=['POST'], content_types=['text/json', 'application/json'])
 def check_update():
